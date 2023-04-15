@@ -13,7 +13,7 @@
 
 namespace libheif_node
 {
-  napi_value decode(napi_env env, napi_callback_info info)
+  napi_value get_info(napi_env env, napi_callback_info info)
   {
     napi_status status;
 
@@ -51,10 +51,6 @@ namespace libheif_node
       auto chroma_bits_per_pixel = image.get_chroma_bits_per_pixel();
       auto is_premultiplied = image.is_premultiplied_alpha();
 
-      auto decoded = image.decode_image(heif_colorspace_RGB, has_alpha_channel ? heif_chroma_interleaved_RGBA : heif_chroma_interleaved_RGB);
-      int out_stride;
-      auto decoded_data = decoded.get_plane(heif_channel_interleaved, &out_stride);
-
       napi_value result_width;
       status = napi_create_uint32(env, width, &result_width);
       ASSERT();
@@ -90,11 +86,52 @@ namespace libheif_node
       ASSERT();
       status = napi_set_named_property(env, result, "chromaBitsPerPixel", result_chroma_bits_per_pixel);
       ASSERT();
+    }
+    catch (const heif::Error &err)
+    {
+      napi_throw_error(env, "LIBHEIF_INTERNAL", "Unexpected error in libheif");
+      return nullptr;
+    }
 
-      napi_value result_data;
-      status = napi_create_buffer_copy(env, out_stride * height, decoded_data, NULL, &result_data);
-      ASSERT();
-      status = napi_set_named_property(env, result, "data", result_data);
+    return result;
+  }
+
+  napi_value decode(napi_env env, napi_callback_info info)
+  {
+    napi_status status;
+
+    size_t argc = 1;
+    napi_value args[1];
+    status = napi_get_cb_info(env, info, &argc, args, NULL, NULL);
+    ASSERT();
+
+    bool is_buffer = false;
+    napi_is_buffer(env, args[0], &is_buffer);
+    if (!is_buffer)
+    {
+      napi_throw_error(env, "EINVAL", "First argument must be a buffer");
+      return nullptr;
+    }
+
+    void *data;
+    size_t buffer_length;
+    status = napi_get_buffer_info(env, args[0], &data, &buffer_length);
+    ASSERT();
+
+    napi_value result;
+
+    try
+    {
+      auto ctx = heif::Context();
+      ctx.read_from_memory_without_copy(data, buffer_length);
+
+      auto image = ctx.get_primary_image_handle();
+
+      auto decoded = image.decode_image(heif_colorspace_RGB, image.has_alpha_channel() ? heif_chroma_interleaved_RGBA : heif_chroma_interleaved_RGB);
+      int out_stride;
+      auto decoded_data = decoded.get_plane(heif_channel_interleaved, &out_stride);
+
+      status = napi_create_buffer_copy(env, out_stride * image.get_height(), decoded_data, NULL, &result);
       ASSERT();
     }
     catch (const heif::Error &err)
@@ -109,12 +146,17 @@ namespace libheif_node
   napi_value init(napi_env env, napi_value exports)
   {
     napi_status status;
-    napi_value fn;
 
-    status = napi_create_function(env, nullptr, 0, decode, nullptr, &fn);
+    napi_value fn_decode;
+    status = napi_create_function(env, nullptr, 0, decode, nullptr, &fn_decode);
+    ASSERT();
+    status = napi_set_named_property(env, exports, "decode", fn_decode);
     ASSERT();
 
-    status = napi_set_named_property(env, exports, "decode", fn);
+    napi_value fn_get_info;
+    status = napi_create_function(env, nullptr, 0, get_info, nullptr, &fn_get_info);
+    ASSERT();
+    status = napi_set_named_property(env, exports, "get_info", fn_get_info);
     ASSERT();
 
     return exports;
