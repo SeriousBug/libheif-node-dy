@@ -3,6 +3,10 @@
 #include <node_api.h>
 #include <libheif/heif_cxx.h>
 
+#if LIBHEIF_NUMERIC_VERSION >= ((1 << 24) | (12 << 16) | (0 << 8) | 0)
+#define LIBHEIF_HAS_PREMULTIPLIED_ALPHA
+#endif
+
 #define ASSERT()                                                            \
   do                                                                        \
   {                                                                         \
@@ -59,7 +63,9 @@ namespace libheif_node
       auto has_alpha_channel = image.has_alpha_channel();
       auto luma_bits_per_pixel = image.get_luma_bits_per_pixel();
       auto chroma_bits_per_pixel = image.get_chroma_bits_per_pixel();
-      auto is_premultiplied = image.is_premultiplied_alpha();
+#ifdef LIBHEIF_HAS_PREMULTIPLIED_ALPHA
+      auto is_premultiplied_alpha = image.is_premultiplied_alpha();
+#endif
 
       napi_value result_width;
       status = napi_create_uint32(env, width, &result_width);
@@ -73,11 +79,13 @@ namespace libheif_node
       status = napi_set_named_property(env, result, "height", result_height);
       ASSERT();
 
-      napi_value result_is_premultiplied;
-      status = napi_get_boolean(env, is_premultiplied, &result_is_premultiplied);
+#ifdef LIBHEIF_HAS_PREMULTIPLIED_ALPHA
+      napi_value result_is_premultiplied_alpha;
+      status = napi_get_boolean(env, is_premultiplied_alpha, &result_is_premultiplied_alpha);
       ASSERT();
-      status = napi_set_named_property(env, result, "isPremultiplied", result_is_premultiplied);
+      status = napi_set_named_property(env, result, "isPremultipliedAlpha", result_is_premultiplied_alpha);
       ASSERT();
+#endif
 
       napi_value result_has_alpha_channel;
       status = napi_get_boolean(env, has_alpha_channel, &result_has_alpha_channel);

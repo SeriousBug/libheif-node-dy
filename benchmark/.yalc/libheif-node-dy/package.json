@@ -1,6 +1,6 @@
 {
   "name": "libheif-node-dy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Native HEIF/HEIC image decoding and information for Node.js",
   "main": "index.js",
   "dependencies": {
@@ -28,5 +28,5 @@
     "url": "https://github.com/SeriousBug/libheif-node-dy/issues"
   },
   "homepage": "https://github.com/SeriousBug/libheif-node-dy#readme",
-  "yalcSig": "e413d3180b4fce1f175512b3d9a0d43e"
+  "yalcSig": "7dafec242450619b5b162e3266ea5d92"
 }

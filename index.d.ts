@@ -5,7 +5,8 @@
 export function getInfo(buffer: Buffer): {
   width: number;
   height: number;
-  isPremultiplied: boolean;
+  /** Only available if libheif version is 1.12.0 or later. */
+  isPremultipliedAlpha?: boolean;
   hasAlphaChannel: boolean;
   lumaBitsPerPixel: number;
   chromaBitsPerPixel: number;
