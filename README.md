@@ -30,6 +30,9 @@ newImage.jpeg().toFile("image.jpg");
 // Or .toBuffer() to get a buffer to use in something else
 ```
 
+You can also look at the [benchmark/convert.js](benchmark/convert.js) file,
+which is an example CLI program for converting HEIC files to JPEGs.
+
 ## Performance
 
 `libheif-node-dy` is around 3 to 5 times faster than `heic-decode` in decoding images.
