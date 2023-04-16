@@ -1,2 +1,4 @@
 build
 *.heic
+node_modules
+*.jpg

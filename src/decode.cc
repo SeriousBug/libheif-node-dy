@@ -1,3 +1,5 @@
+#include <sstream>
+#include <string>
 #include <node/node_api.h>
 #include <libheif/heif_cxx.h>
 
@@ -13,7 +15,44 @@
 
 namespace libheif_node
 {
-  napi_value get_info(napi_env env, napi_callback_info info)
+  std::string heif_error_to_string(const heif::Error &err)
+  {
+    std::stringstream ss;
+    ss << "heif_error: " << err.get_message() << " (" << err.get_code() << ", " << err.get_subcode() << ")";
+    return ss.str();
+  }
+
+  /** Steals the buffer that the caller was trying to write out of.
+   *
+   * This is dangerous, but we'll be immediately copying this data to a napi buffer.
+   */
+  class BufferStealer : public heif::Context::Writer
+  {
+  private:
+  public:
+    const void *buffer;
+    size_t size;
+
+    BufferStealer()
+    {
+    }
+
+    heif_error write(const void *data, size_t size)
+    {
+      this->buffer = data;
+      this->size = size;
+
+      heif_error error;
+      error.code = heif_error_Ok;
+      error.subcode = heif_suberror_Unspecified;
+      error.message = "OK";
+
+      return error;
+    }
+  };
+
+  napi_value
+  get_info(napi_env env, napi_callback_info info)
   {
     napi_status status;
 
@@ -89,7 +128,7 @@ namespace libheif_node
     }
     catch (const heif::Error &err)
     {
-      napi_throw_error(env, "LIBHEIF_INTERNAL", "Unexpected error in libheif");
+      napi_throw_error(env, "LIBHEIF_INTERNAL", heif_error_to_string(err).c_str());
       return nullptr;
     }
 
@@ -127,16 +166,16 @@ namespace libheif_node
 
       auto image = ctx.get_primary_image_handle();
 
-      auto decoded = image.decode_image(heif_colorspace_RGB, image.has_alpha_channel() ? heif_chroma_interleaved_RGBA : heif_chroma_interleaved_RGB);
+      auto decoded = image.decode_image(heif_colorspace_RGB, heif_chroma_interleaved_RGBA);
       int out_stride;
-      auto decoded_data = decoded.get_plane(heif_channel_interleaved, &out_stride);
+      const uint8_t *decoded_data = decoded.get_plane(heif_channel_interleaved, &out_stride);
 
       status = napi_create_buffer_copy(env, out_stride * image.get_height(), decoded_data, NULL, &result);
       ASSERT();
     }
     catch (const heif::Error &err)
     {
-      napi_throw_error(env, "LIBHEIF_INTERNAL", "Unexpected error in libheif");
+      napi_throw_error(env, "LIBHEIF_INTERNAL", heif_error_to_string(err).c_str());
       return nullptr;
     }
 
