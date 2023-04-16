@@ -1,10 +1,10 @@
 const sharp = require("sharp");
 const fs = require("fs");
-const addon = require("./build/Release/addon");
+const libheif = require("./index");
 
-const file = fs.readFileSync("image1.heic");
-const info = addon.get_info(file);
-const data = addon.decode(file);
+const file = fs.readFileSync("image.heic");
+const info = libheif.getInfo(file);
+const data = libheif.decode(file);
 
 const image = sharp(data, {
   raw: {
@@ -14,4 +14,4 @@ const image = sharp(data, {
     premultiplied: info.is_premultiplied,
   },
 });
-image.jpeg().toFile("image1.jpg");
+image.jpeg().toFile("image.jpg");

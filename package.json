@@ -1,12 +1,18 @@
 {
   "name": "libheif-node-dy",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Native HEIF/HEIC image decoding and information for Node.js",
   "main": "index.js",
   "dependencies": {
+    "bindings": "^1.5.0",
     "sharp": "^0.32.0"
   },
-  "devDependencies": {},
+  "files": [
+    "/src",
+    "/binding.gyp",
+    "/index.js",
+    "index.d.ts"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "node-gyp rebuild"
@@ -21,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/SeriousBug/libheif-node-dy/issues"
   },
-  "homepage": "https://github.com/SeriousBug/libheif-node-dy#readme"
+  "homepage": "https://github.com/SeriousBug/libheif-node-dy#readme",
+  "devDependencies": {
+    "node-addon-api": "^6.0.0"
+  }
 }
