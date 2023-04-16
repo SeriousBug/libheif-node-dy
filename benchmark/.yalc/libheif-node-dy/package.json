@@ -4,7 +4,8 @@
   "description": "Native HEIF/HEIC image decoding and information for Node.js",
   "main": "index.js",
   "dependencies": {
-    "bindings": "^1.5.0"
+    "bindings": "^1.5.0",
+    "sharp": "^0.32.0"
   },
   "files": [
     "/src",
@@ -27,7 +28,5 @@
     "url": "https://github.com/SeriousBug/libheif-node-dy/issues"
   },
   "homepage": "https://github.com/SeriousBug/libheif-node-dy#readme",
-  "devDependencies": {
-    "node-addon-api": "^6.0.0"
-  }
+  "yalcSig": "6d1c78fd32eb228a055a4bd425c51c44"
 }
