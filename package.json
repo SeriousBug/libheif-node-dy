@@ -21,8 +21,8 @@
     "type": "git",
     "url": "git+https://github.com/SeriousBug/libheif-node-dy.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Kaan Genc <kaan@bgenc.net>",
+  "license": "MIT",
   "gypfile": true,
   "bugs": {
     "url": "https://github.com/SeriousBug/libheif-node-dy/issues"
