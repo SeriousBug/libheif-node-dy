@@ -4,11 +4,9 @@ dependencies:
   bindings:
     specifier: ^1.5.0
     version: 1.5.0
-
-devDependencies:
-  node-addon-api:
-    specifier: ^6.0.0
-    version: 6.0.0
+  node-api-headers:
+    specifier: ^0.0.5
+    version: 0.0.5
 
 packages:
 
@@ -22,6 +20,6 @@ packages:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
     dev: false
 
-  /node-addon-api@6.0.0:
-    resolution: {integrity: sha512-GyHvgPvUXBvAkXa0YvYnhilSB1A+FRYMpIVggKzPZqdaZfevZOuzfWzyvgzOwRLHBeo/MMswmJFsrNF4Nw1pmA==}
-    dev: true
+  /node-api-headers@0.0.5:
+    resolution: {integrity: sha512-S/6zDvgOmYYJJ22MpF+b1XhpnsyeuFxPC5p3rnO22VOtoV7CU3tffy78tZo9cnMZzpX/gJgffhfxVz/gmI4ksg==}
+    dev: false

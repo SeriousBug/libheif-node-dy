@@ -1,6 +1,6 @@
 #include <sstream>
 #include <string>
-#include <node/node_api.h>
+#include <node_api.h>
 #include <libheif/heif_cxx.h>
 
 #define ASSERT()                                                            \
@@ -21,35 +21,6 @@ namespace libheif_node
     ss << "heif_error: " << err.get_message() << " (" << err.get_code() << ", " << err.get_subcode() << ")";
     return ss.str();
   }
-
-  /** Steals the buffer that the caller was trying to write out of.
-   *
-   * This is dangerous, but we'll be immediately copying this data to a napi buffer.
-   */
-  class BufferStealer : public heif::Context::Writer
-  {
-  private:
-  public:
-    const void *buffer;
-    size_t size;
-
-    BufferStealer()
-    {
-    }
-
-    heif_error write(const void *data, size_t size)
-    {
-      this->buffer = data;
-      this->size = size;
-
-      heif_error error;
-      error.code = heif_error_Ok;
-      error.subcode = heif_suberror_Unspecified;
-      error.message = "OK";
-
-      return error;
-    }
-  };
 
   napi_value
   get_info(napi_env env, napi_callback_info info)

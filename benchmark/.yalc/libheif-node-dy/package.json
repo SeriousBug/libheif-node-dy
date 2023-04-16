@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "bindings": "^1.5.0",
-    "sharp": "^0.32.0"
+    "node-api-headers": "^0.0.5"
   },
   "files": [
     "/src",
@@ -28,5 +28,5 @@
     "url": "https://github.com/SeriousBug/libheif-node-dy/issues"
   },
   "homepage": "https://github.com/SeriousBug/libheif-node-dy#readme",
-  "yalcSig": "6d1c78fd32eb228a055a4bd425c51c44"
+  "yalcSig": "e413d3180b4fce1f175512b3d9a0d43e"
 }

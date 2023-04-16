@@ -2,7 +2,13 @@
 
 Native HEIC/HEIF image decoding and information, using dynamically linked [libheif](https://github.com/strukturag/libheif). Supports converting HEIC to JPEG, PNG, and other formats when combined with [Sharp](https://sharp.pixelplumbing.com/).
 
-This package dynamically links against libheif, and you must separately have it installed.
+This package dynamically links against libheif. You must have libheif and its
+headers installed yourself. It is widely available on most platforms:
+
+- Debian, Ubuntu: Install `libheif1 libheif-dev`
+- ArchLinux, EndeavourOS: `libheif`
+- Alpine Linux: `libheif-dev`
+- MacOS (Homebrew): `libheif`
 
 ## Usage
 
