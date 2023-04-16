@@ -19,7 +19,8 @@ const { decode, getInfo } = require('libheif-node-dy');
 
 // Or any other way to get your image into a Buffer
 const image = fs.readFileSync('path-to.heic');
-const { width, height, isPremultiplied, hasAlphaChannel } = getInfo(image);
+// There is more information available! Check the type definitions.
+const { width, height } = getInfo(image);
 const decodedImage = decode(image);
 
 // To convert it into JPEG or PNG, use it with sharp:
@@ -29,7 +30,6 @@ const newImage = sharp(decodedImage, {
     height,
     width,
     channels: 4,
-    premultiplied: isPremultiplied,
   },
 });
 newImage.jpeg().toFile("image.jpg");
@@ -43,7 +43,7 @@ which is an example CLI program for converting HEIC files to JPEGs.
 
 `libheif-node-dy` is around 3 to 5 times faster than `heic-decode` in decoding images.
 
-![4 violin plots. X axes are labeled Time (ms). First plot: Small images, about 0.6MP. libheif-node-dy averages around 80, heic-decode is between 264 and 284. Second plot: Medium images, about 2.5MP. libheif-node-dy averages around 280, heic-decode is slightly above 1039. Third plot: Large images, about 5.7MP. libheif-node-dy averages around 600, heic-decode is between 2322 and 2522. Fourth plot: Extra large images, 9.1MP to 24MP. libheif-node-dy averages around 1500, heic-decode is slightly below 7884.](benchmark/results.png)
+![4 violin plots. X axes are labeled Time (ms). First plot: Small images, about 0.6MP. libheif-node-dy averages around 80, heic-decode is between 264 and 284. Second plot: Medium images, about 2.5MP. libheif-node-dy averages around 280, heic-decode is slightly above 1039. Third plot: Large images, about 5.7MP. libheif-node-dy averages around 600, heic-decode is between 2322 and 2522. Fourth plot: Extra large images, 9.1MP to 24MP. libheif-node-dy averages around 1500, heic-decode is slightly below 7884.](https://github.com/SeriousBug/libheif-node-dy/raw/main/benchmark/results.png)
 
 ## Licensing
 

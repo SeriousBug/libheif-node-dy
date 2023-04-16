@@ -17,7 +17,6 @@ fileNames.forEach((fileName) => {
       height: info.height,
       width: info.width,
       channels: 4,
-      premultiplied: info.isPremultiplied,
     },
   });
   image.jpeg().toFile(fileName.replace(/\.heic$/, ".jpg"));

@@ -1,6 +1,6 @@
 {
   "name": "libheif-node-dy",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Native HEIF/HEIC image decoding and information for Node.js",
   "main": "index.js",
   "dependencies": {
